@@ -17,6 +17,7 @@ public class SpaceController : MonoBehaviour {
 
 	IEnumerator Start()
 	{
+
 		// First, check if user has location service enabled
 		if (!Input.location.isEnabledByUser){
 			AddField("GPS failed");
@@ -63,16 +64,23 @@ public class SpaceController : MonoBehaviour {
 	}
 
 	public void FindMe(){
-		//if (gpsEnable == true){
+		if (gpsEnable == true){
 			float lt = Input.location.lastData.latitude;
 			float ln = Input.location.lastData.longitude;
 			MAP.AddPoint(lt, ln);
-		//}
+		}
+		else{
+			AddField("No GPS");
+		}
 	}
 
 	public void ZoomMap(int num){
 		MAP.zoom += num;
 		MAP.Refresh();
+	}
+
+	public void SetB(){
+		MAP.AddPoint(55.773580f, 37.546143f);
 	}
 
 		/*
@@ -131,7 +139,11 @@ public class SpaceController : MonoBehaviour {
 	}
 
 	void PrintText(){
+		if (textField.preferredHeight >= 250)
+		{
+			endText = "";
+		}
+
 		textField.text = endText;
-		endText = "";
 	}
 }
