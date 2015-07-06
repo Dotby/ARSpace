@@ -83,15 +83,14 @@ public class GoogleMap : MonoBehaviour
 		yield return req;
 		while (!req.isDone)
 			yield return null;
-		if (req.error == "") {
+		//if (req.error == "") {
 			var tex = new Texture2D (size, size);
 			tex.LoadImage (req.bytes);
 			mapQuad.GetComponent<Renderer>().material.mainTexture = tex;
-		}
-		else{
+//		}
+//		else{
 			Debug.Log(req.error);
-
-		}
+		//}
 	}
 
 	public void AddPoint(float lt, float ln){
