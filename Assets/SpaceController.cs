@@ -6,6 +6,7 @@ public class SpaceController : MonoBehaviour {
 
 	public Text textField;
 	string endText = "";
+	bool gpsEnable = false;
 	//LocationInfo currentGPSPosition;
 
 	IEnumerator Start()
@@ -44,10 +45,11 @@ public class SpaceController : MonoBehaviour {
 		{
 			// Access granted and location value could be retrieved
 			AddField("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
+			gpsEnable = true;
 		}
 		
 		// Stop service if there is no need to query location updates continuously
-		Input.location.Stop();
+		//Input.location.Stop();
 	}
 
 //	void RetrieveGPSData()
@@ -58,6 +60,10 @@ public class SpaceController : MonoBehaviour {
 //	}
 
 	void Update () {
+		if (gpsEnable == true){
+			AddField("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
+		}
+
 		PrintText();
 	}
 
@@ -67,6 +73,6 @@ public class SpaceController : MonoBehaviour {
 
 	void PrintText(){
 		textField.text = endText;
-		//endText = "";
+		endText = "";
 	}
 }
