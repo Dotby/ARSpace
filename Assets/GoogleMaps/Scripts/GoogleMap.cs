@@ -60,10 +60,14 @@ public class GoogleMap : MonoBehaviour
 		foreach (GoogleMapMarker i in markers) {
 			qs += "&markers=" + string.Format ("size:{0}|color:{1}|label:{2}", i.size.ToString ().ToLower (), i.color, i.label);
 			foreach (var loc in i.locations) {
-				if (loc.address != "")
+				if (loc.address != ""){
+					Debug.Log("NON esc: " + loc.address + " esc: " + WWW.EscapeURL (loc.address));
 					qs += "|" + WWW.EscapeURL (loc.address);
-				else
-					qs += "|" +WWW.EscapeURL (string.Format ("{0},{1}", loc.latitude, loc.longitude));
+				}
+				else{
+					Debug.Log("NON esc: " + string.Format ("{0},{1}", loc.latitude, loc.longitude) + " esc: " + WWW.EscapeURL (string.Format ("{0},{1}", loc.latitude, loc.longitude)));
+					qs += "|" + WWW.EscapeURL (string.Format ("{0},{1}", loc.latitude, loc.longitude));
+				}
 			}
 		}
 		
@@ -80,17 +84,18 @@ public class GoogleMap : MonoBehaviour
 		
 		
 		WWW req = new WWW(url + "?" + qs);
+		Debug.Log("URL: " +url + "?" + qs);
 		yield return req;
 		while (!req.isDone)
 			yield return null;
-		//if (req.error == "") {
+		if (req.error == null) {
 			var tex = new Texture2D (size, size);
 			tex.LoadImage (req.bytes);
 			mapQuad.GetComponent<Renderer>().material.mainTexture = tex;
-//		}
-//		else{
-			Debug.Log(req.error);
-		//}
+		}
+		else{
+			Debug.Log("Error: " + req.error);
+		}
 	}
 
 	public void AddPoint(float lt, float ln){
